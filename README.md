@@ -1,0 +1,2 @@
+# sinkdir
+Sync directories
