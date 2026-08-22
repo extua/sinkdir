@@ -1,4 +1,1 @@
-fn main.rs {
-
-    
-}
+fn main() {}
