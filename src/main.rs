@@ -1,6 +1,5 @@
 use clap::{arg, command, Command};
-use sinkdir::copy;
-use sinkdir::delete;
+use sinkdir::{copy, delete, sync};
 
 fn main() {
     let matches = command!() // requires `cargo` feature
@@ -16,6 +15,12 @@ fn main() {
         .subcommand(
             Command::new("delete")
                 .about("Delete target")
+                .arg(arg!([TARGET])),
+        )
+        .subcommand(
+            Command::new("sync")
+                .about("Synchronise source with target")
+                .arg(arg!([SOURCE]))
                 .arg(arg!([TARGET])),
         )
         .get_matches();
@@ -35,6 +40,15 @@ fn main() {
                 .get_one::<String>("TARGET")
                 .expect("must provide a target value");
             delete(target)
+        }
+        Some(("sync", sub_matches)) => {
+            let source = sub_matches
+                .get_one::<String>("SOURCE")
+                .expect("Must provide a source value");
+            let target = sub_matches
+                .get_one::<String>("TARGET")
+                .expect("must provide a target value");
+            sync(source, target)
         }
         _ => unreachable!("Exhausted list of subcommands and subcommand_required prevents `None`"),
     }
