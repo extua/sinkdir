@@ -1,5 +1,6 @@
 use clap::{arg, command, Command};
 use sinkdir::copy;
+use sinkdir::delete;
 
 fn main() {
     let matches = command!() // requires `cargo` feature
@@ -12,6 +13,11 @@ fn main() {
                 .arg(arg!([SOURCE]))
                 .arg(arg!([TARGET])),
         )
+        .subcommand(
+            Command::new("delete")
+                .about("Delete target")
+                .arg(arg!([TARGET])),
+        )
         .get_matches();
 
     match matches.subcommand() {
@@ -22,8 +28,13 @@ fn main() {
             let target = sub_matches
                 .get_one::<String>("TARGET")
                 .expect("must provide a target value");
-            println!("copying from {source:?} to {target:?}",);
             copy(source, target)
+        }
+        Some(("delete", sub_matches)) => {
+            let target = sub_matches
+                .get_one::<String>("TARGET")
+                .expect("must provide a target value");
+            delete(target)
         }
         _ => unreachable!("Exhausted list of subcommands and subcommand_required prevents `None`"),
     }
