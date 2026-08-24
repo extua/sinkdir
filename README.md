@@ -8,7 +8,7 @@ Create systemd service files in `/etc/systemd/system`:
 
 **sinkdir.service**
 
-```toml
+```ini
 [Unit]
 Description="Sychronise target directry with source"
 
@@ -24,7 +24,7 @@ WantedBy=multi-user.target
 
 **sinkdir.timer**
 
-```toml
+```ini
 [Unit]
 Description="Run directory sync every minute"
 
