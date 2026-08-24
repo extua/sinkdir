@@ -24,9 +24,9 @@ pub fn copy(source: &str, target: &str) {
                 copy(&entry.to_string_lossy(), &new_target_path.to_string_lossy());
             }
         } else {
-            // Need to add filename to target directory
+            // Add filename to target directory, in order to
             let target_filename: PathBuf = target_path.join(source_path.file_name().unwrap());
-            println!("copying from {source_path:?} to {target_filename:?}");
+            // println!("copying from {source_path:?} to {target_filename:?}");
             fs::copy(&source_path, target_filename).unwrap();
         }
     }
@@ -36,10 +36,12 @@ pub fn delete(target: &str) {
     let target_path: PathBuf = Path::new(target).to_path_buf();
     if target_path.is_dir() {
         fs::remove_dir_all(&target_path).expect("could not delete directory");
+    } else if target_path.is_file() && target_path.exists() {
+        // Just print to stderr here because
+        // it's a recoverable error.
+        fs::remove_file(&target_path)
+            .unwrap_or_else(|err| eprintln!("Could not delete file: {err}"));
     }
-    // Just print the error here because this is a
-    // recoverable error
-    fs::remove_file(&target_path).unwrap_or_else(|err| eprintln!("Could not delete file: {err}"));
 }
 
 pub fn sync(source: &str, target: &str) {
@@ -48,7 +50,7 @@ pub fn sync(source: &str, target: &str) {
     if source_path.is_dir() && target_path.is_dir() {
         // First wipe the target, and we're reading through
         // the directory because we want to delete everything
-        // in the directory, not the directory itself
+        // _in_ the directory, not the directory itself
         for entry in fs::read_dir(target_path).unwrap() {
             delete(&entry.unwrap().path().to_string_lossy());
         }
