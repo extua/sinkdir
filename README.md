@@ -1,13 +1,8 @@
 # sinkdir
 
-API Definition:
+## Install instructions
 
-1. Copy (path from, path to)
-
-2. Delete (file, path)
-
-
-Copy the executable to `/usr/local/bin`
+Download the latest binary from releases, and copy it to `/usr/local/bin`.
 
 Create systemd service files in `/etc/systemd/system`:
 
