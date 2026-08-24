@@ -11,11 +11,11 @@ pub fn copy(source: &str, target: &str) {
 
     if target_path.is_dir() {
         if source_path.is_dir() {
-            // Read through the directory and recursively
+            // Read through the source directory and recursively
             // run all paths back through this copy function
             for entry in fs::read_dir(source_path).unwrap() {
                 let entry: PathBuf = entry.unwrap().path();
-                let mut new_target_path = target_path.clone();
+                let mut new_target_path: PathBuf = target_path.clone();
                 // If the source directory contains a directory
                 // we need to create it in the target directory
                 if entry.is_dir() {
@@ -27,12 +27,8 @@ pub fn copy(source: &str, target: &str) {
                 copy(&entry.to_string_lossy(), &new_target_path.to_string_lossy());
             }
         } else {
-            // Need to add filename and trailing separator to target directory
-            let target_filename = format!(
-                "{}/{}",
-                target_path.to_string_lossy(),
-                source_path.file_name().unwrap().to_str().unwrap()
-            );
+            // Need to add filename to target directory
+            let target_filename: PathBuf = target_path.join(source_path.file_name().unwrap());
             println!("copying from {source_path:?} to {target_filename:?}");
             fs::copy(&source_path, target_filename).unwrap();
         }
@@ -44,22 +40,30 @@ pub fn delete(target: &str) {
     if target_path.is_dir() {
         fs::remove_dir_all(&target_path).expect("could not delete directory");
     }
-    fs::remove_file(&target_path).expect("could not delete file");
+    match fs::remove_file(&target_path) {
+        Ok(file) => println!("deleted {file:?}"),
+        Err(_) => (),
+    };
 }
 
 pub fn sync(source: &str, target: &str) {
-    // First wipe the target
-    delete(target);
-    // Then copy everything fromt the source to the target
-    copy(source, target);
-
-    // let source_path: PathBuf = Path::new(source).to_path_buf();
-    // let target_path: PathBuf = Path::new(target).to_path_buf();
+    let source_path: PathBuf = Path::new(source).to_path_buf();
+    let target_path: PathBuf = Path::new(target).to_path_buf();
+    if source_path.is_dir() && target_path.is_dir() {
+        // First wipe the target
+        for entry in fs::read_dir(target_path).unwrap() {
+            delete(&entry.unwrap().path().to_string_lossy());
+        }
+        // Then copy everything fromt the source to the target
+        copy(source, target);
+    } else {
+        eprintln!("Both {source} and {target} must be directories");
+    }
 
     // let old_state: Vec<(PathBuf, i64)> = get_state(&source_path);
 
     // println!("old state is {old_state:?}");
-    // sleep(Duration::from_secs(10));
+    // sleep(Duration::from_secs(6));
 
     // let new_state: Vec<(PathBuf, i64)> = get_state(&source_path);
 
