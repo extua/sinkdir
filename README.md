@@ -1,10 +1,14 @@
 # sinkdir
 
+## Test
+
+This isn't easy to write unit tests for as it would require mocking system io calls. A short integration test script is included in `test.sh`.
+
 ## Install instructions
 
 Download the latest binary from releases, and copy it to `/usr/local/bin`.
 
-Create systemd service files in `/etc/systemd/system`:
+To run sync on a timer, create systemd service files in `/etc/systemd/system`:
 
 **sinkdir.service**
 
