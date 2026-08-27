@@ -1,4 +1,4 @@
-# sinkdir
+# Sinkdir
 
 ## Test
 
@@ -8,7 +8,21 @@ This isn't easy to write unit tests for as it would require mocking system io ca
 
 Download the latest binary from releases, and copy it to `/usr/local/bin`.
 
-To run sync on a timer, create systemd service files in `/etc/systemd/system`:
+### Usage
+
+Copy from one directory to another, also works on individual files.
+
+`sinkdir copy <SOURCE> <TARGET>`
+
+Delete a file or directory. This is mainly a wrapper around remove file system calls.
+
+`simkdir delete <TARGET>`
+
+Sync one directory with another.
+
+`sinkdir sync <SOURCE> <TARGET>`
+
+To run sync on a timer every minute, create systemd service files in `/etc/systemd/system`:
 
 **sinkdir.service**
 
