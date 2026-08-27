@@ -2,11 +2,11 @@
 
 ## Test
 
-This isn't easy to write unit tests for as it would require mocking system io calls. A short integration test script is included in `test.sh`.
+This isn't easy to write unit tests for as it would require mocking system io calls. A short [integration test script](https://github.com/extua/sinkdir/blob/main/test.sh) is included in `test.sh`.
 
 ## Install instructions
 
-Download the latest binary from releases, and copy it to `/usr/local/bin`.
+Download the latest binary [from releases](https://github.com/extua/sinkdir/releases), and copy it to `/usr/local/bin`.
 
 ### Usage
 
