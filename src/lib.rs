@@ -1,7 +1,9 @@
 use std::fs;
 use std::fs::create_dir_all;
+use std::path::{Path, PathBuf};
+// Linux-specific metadata used to get the file
+// last modified value
 use std::os::linux::fs::MetadataExt;
-use std::path::{Path, PathBuf}; // Linux specific file metadata can only be used on
 
 pub fn copy(source: &str, target: &str) {
     let source_path: PathBuf = Path::new(source).to_path_buf();
