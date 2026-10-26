@@ -1,3 +1,7 @@
+> [!WARNING]  
+> This was a test project done over a week, throwaway code, not particularly well designed and not actively maintained.
+
+
 # Sinkdir
 
 ## Test
